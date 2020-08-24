@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinarySerializer", "BinarySerializer\BinarySerializer.csproj", "{04A386D5-C4CE-4C62-9235-7833EB10C5D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinarySerializerTest", "BinarySerializerTest\BinarySerializerTest.csproj", "{3760F6FF-1CD5-43DD-A7B5-6A9B45592F05}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04A386D5-C4CE-4C62-9235-7833EB10C5D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04A386D5-C4CE-4C62-9235-7833EB10C5D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04A386D5-C4CE-4C62-9235-7833EB10C5D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04A386D5-C4CE-4C62-9235-7833EB10C5D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3760F6FF-1CD5-43DD-A7B5-6A9B45592F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3760F6FF-1CD5-43DD-A7B5-6A9B45592F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3760F6FF-1CD5-43DD-A7B5-6A9B45592F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3760F6FF-1CD5-43DD-A7B5-6A9B45592F05}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {50A2C179-67C9-45FA-B54B-92E3F54B4030}
+	EndGlobalSection
+EndGlobal
