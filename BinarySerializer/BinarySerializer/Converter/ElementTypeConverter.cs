@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BinarySerializer.Converter
 {
+    /// <summary>
+    /// 基础类型枚举
+    /// </summary>
     public enum ElementType
     {
         NotElementType = -1,
@@ -24,6 +27,9 @@ namespace BinarySerializer.Converter
         SByte,
         Decimal
     }
+    /// <summary>
+    /// 基础类型转换器
+    /// </summary>
     public class ElementTypeConverter : BinaryConverter
     {
 

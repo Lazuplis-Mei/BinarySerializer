@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BinarySerializer.Converter
 {
-
+    /// <summary>
+    /// 找不到指定的类型，请参考<see cref="Serializer.AddAssembly(Assembly)"/>
+    /// </summary>
     public class TypeNotFoundException : Exception
     {
 
     }
 
+    /// <summary>
+    /// <see cref="Type"/>转换器
+    /// </summary>
     public class TypeConverter : BinaryConverter<Type>
     {
         public override Type ReadBytes(Stream stream)

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BinarySerializer.Converter
 {
+    /// <summary>
+    /// 可空类型<see cref="Nullable{T}"/>转换器
+    /// </summary>
     public class NullableConverter : BinaryConverter
     {
         public Type InternalType;

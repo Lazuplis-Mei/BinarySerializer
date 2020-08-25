@@ -9,18 +9,26 @@ using System.Threading.Tasks;
 
 namespace BinarySerializer.Converter
 {
-
+    /// <summary>
+    /// 属性不可读
+    /// </summary>
     public class PropertyCannotReadException : Exception
     {
 
     }
 
+    /// <summary>
+    /// 该特性可用于修饰字段和属性，指示它们不被序列化
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class BinaryIgnoreAttribute : Attribute
     {
 
     }
 
+    /// <summary>
+    /// 对象转换器
+    /// </summary>
     public class ObjectConverter
     {
         public static T ReadBytes<T>(Stream stream)

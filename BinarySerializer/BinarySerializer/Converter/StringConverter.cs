@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BinarySerializer.Converter
 {
+    /// <summary>
+    /// <see cref="string"/>转换器，默认编码为<see cref="Serializer.DefaultEncoding"/>
+    /// </summary>
     public class StringConverter : BinaryConverter<string>
     {
         public override string ReadBytes(Stream stream)

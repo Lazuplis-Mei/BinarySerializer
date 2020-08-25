@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 namespace BinarySerializer.Converter
 {
 
+    /// <summary>
+    /// <see cref="KeyValuePair{TKey, TValue}"/>转换器
+    /// </summary>
     public class KeyValuePairConverter : BinaryConverter
     {
         public Type TKey;
@@ -60,6 +63,9 @@ namespace BinarySerializer.Converter
             }
         }
     }
+    /// <summary>
+    /// <see cref="Dictionary{TKey, TValue}"/>转换器
+    /// </summary>
     public class DictionaryConverter : BinaryConverter
     {
         public Type TKey;

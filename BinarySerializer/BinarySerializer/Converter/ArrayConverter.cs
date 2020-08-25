@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace BinarySerializer.Converter
 {
+    /// <summary>
+    /// <see cref="Array"/>，<see cref="List{T}"/>，<see cref="IEnumerable{T}"/>转换器
+    /// 其中<see cref="IEnumerable{T}"/>的实例为<see cref="List{T}"/>
+    /// </summary>
     public class ArrayConverter : BinaryConverter
     {
         public Type InternalType;

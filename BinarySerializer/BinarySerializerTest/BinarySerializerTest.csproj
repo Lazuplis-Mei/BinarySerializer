@@ -59,6 +59,7 @@
     <Compile Include="StringTest.cs" />
     <Compile Include="ArrayTest.cs" />
     <Compile Include="GenericTest.cs" />
+    <Compile Include="CompressTest.cs" />
     <Compile Include="UtilitiesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

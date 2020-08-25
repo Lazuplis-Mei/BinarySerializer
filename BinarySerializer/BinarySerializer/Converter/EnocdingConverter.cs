@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BinarySerializer.Converter
 {
+    /// <summary>
+    /// <see cref="Encoding"/>转换器
+    /// </summary>
     public class EnocdingConverter : BinaryConverter<Encoding>
     {
         public override Encoding ReadBytes(Stream stream)

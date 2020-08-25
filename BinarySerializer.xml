@@ -1,0 +1,272 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BinarySerializer</name>
+    </assembly>
+    <members>
+        <member name="T:BinarySerializer.Converter.ArrayConverter">
+            <summary>
+            <see cref="T:System.Array"/>，<see cref="T:System.Collections.Generic.List`1"/>，<see cref="T:System.Collections.Generic.IEnumerable`1"/>转换器
+            其中<see cref="T:System.Collections.Generic.IEnumerable`1"/>的实例为<see cref="T:System.Collections.Generic.List`1"/>
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.DateTimeConverter">
+            <summary>
+            <see cref="T:System.DateTime"/>转换器
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.TimeSpanConverter">
+            <summary>
+            <see cref="T:System.TimeSpan"/>转换器
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.KeyValuePairConverter">
+            <summary>
+            <see cref="T:System.Collections.Generic.KeyValuePair`2"/>转换器
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.DictionaryConverter">
+            <summary>
+            <see cref="T:System.Collections.Generic.Dictionary`2"/>转换器
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.EnocdingConverter">
+            <summary>
+            <see cref="T:System.Text.Encoding"/>转换器
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.NullableConverter">
+            <summary>
+            可空类型<see cref="T:System.Nullable`1"/>转换器
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.StringConverter">
+            <summary>
+            <see cref="T:System.String"/>转换器，默认编码为<see cref="F:BinarySerializer.Serializer.DefaultEncoding"/>
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.TypeNotFoundException">
+            <summary>
+            找不到指定的类型，请参考<see cref="M:BinarySerializer.Serializer.AddAssembly(System.Reflection.Assembly)"/>
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.TypeConverter">
+            <summary>
+            <see cref="T:System.Type"/>转换器
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.BinaryConverter">
+            <summary>
+            提供二进制对象转换器的基类
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.BinaryConverter`1">
+            <summary>
+            提供二进制对象转换器的泛型基类
+            </summary>
+            <typeparam name="T">转换类型</typeparam>
+        </member>
+        <member name="T:BinarySerializer.Converter.ElementType">
+            <summary>
+            基础类型枚举
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.ElementTypeConverter">
+            <summary>
+            基础类型转换器
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.PropertyCannotReadException">
+            <summary>
+            属性不可读
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.BinaryIgnoreAttribute">
+            <summary>
+            该特性可用于修饰字段和属性，指示它们不被序列化
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.ObjectConverter">
+            <summary>
+            对象转换器
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.Utilities">
+            <summary>
+            几个功能函数
+            </summary>
+        </member>
+        <member name="M:BinarySerializer.Converter.Utilities.IsOrBaseFrom``1(System.Type)">
+            <summary>
+            表示类型是否是<see langword="TBase"/>或继承自<see langword="TBase"/>
+            </summary>
+            <typeparam name="TBase">基类型</typeparam>
+            <param name="type">类型</param>
+        </member>
+        <member name="M:BinarySerializer.Converter.Utilities.BytesToInts(System.Byte[])">
+            <summary>
+            将<see langword="byte[]"/>转换成<see langword="int[]"/>，长度不够将会在末尾补0
+            </summary>
+            <param name="bytes">字节数组</param>
+        </member>
+        <member name="M:BinarySerializer.Converter.Utilities.IntsToBytes(System.Int32[])">
+            <summary>
+            将<see langword="int[]"/>转换成<see langword="byte[]"/>
+            </summary>
+            <param name="ints">int数组</param>
+        </member>
+        <member name="M:BinarySerializer.Converter.Utilities.StrongGetValue``1(System.Object,System.String)">
+            <summary>
+            通过反射获取<see langword="private"/>字段或属性的值
+            </summary>
+            <typeparam name="T">值的类型</typeparam>
+            <param name="obj">要获取值的对象</param>
+            <param name="memberName">字段或属性的名字</param>
+            <exception cref="T:BinarySerializer.Converter.PropertyCannotReadException"/>
+        </member>
+        <member name="M:BinarySerializer.Converter.Utilities.StrongSetValue``1(System.Object,System.String,``0)">
+            <summary>
+            通过反射修改<see langword="private"/>或<see langword="readonly"/>的字段或<see langword="private"/>属性的值
+            </summary>
+            <typeparam name="T">值的类型</typeparam>
+            <param name="obj">要修改的对象</param>
+            <param name="memberName">字段或属性的名字</param>
+            <param name="value">修改的值</param>
+        </member>
+        <member name="T:BinarySerializer.Serializer">
+            <summary>
+            提供二进制序列化的实现
+            </summary>
+        </member>
+        <member name="F:BinarySerializer.Serializer.OnlyPublicMember">
+            <summary>
+            是否仅对<see langword="public"/>成员进行序列化
+            </summary>
+        </member>
+        <member name="F:BinarySerializer.Serializer.AddAssemblyWhenSerializing">
+            <summary>
+            是否在调用<see cref="M:BinarySerializer.Serializer.Serialize(System.Type,System.Object,System.IO.Stream)"/>时自动添加对应类型的程序集
+            </summary>
+        </member>
+        <member name="F:BinarySerializer.Serializer.DefaultEncoding">
+            <summary>
+            表示<see cref="T:BinarySerializer.Converter.StringConverter"/>序列化<see cref="T:System.String"/>时使用的编码
+            </summary>
+        </member>
+        <member name="F:BinarySerializer.Serializer.Modules">
+            <summary>
+            加载的程序集对应的模块，用于<see cref="T:BinarySerializer.Converter.TypeConverter"/>反序列化类型
+            </summary>
+        </member>
+        <member name="P:BinarySerializer.Serializer.BindingFlags">
+            <summary>
+            表示当前获取成员使用的<see cref="P:BinarySerializer.Serializer.BindingFlags"/>
+            </summary>
+        </member>
+        <member name="M:BinarySerializer.Serializer.AddConverter``1">
+            <summary>
+            添加一个自定义的<see cref="T:BinarySerializer.Converter.BinaryConverter"/>，用于转换特定的类型
+            </summary>
+            <typeparam name="T">表示一个派生自<see cref="T:BinarySerializer.Converter.BinaryConverter"/>的类型</typeparam>
+        </member>
+        <member name="M:BinarySerializer.Serializer.RemoveConverter``1">
+            <summary>
+            移除一个自定义的<see cref="T:BinarySerializer.Converter.BinaryConverter"/>，如果确实包含
+            </summary>
+            <typeparam name="T">表示一个派生自<see cref="T:BinarySerializer.Converter.BinaryConverter"/>的类型</typeparam>
+        </member>
+        <member name="M:BinarySerializer.Serializer.AddAssembly(System.Reflection.Assembly)">
+            <summary>
+            添加对应类型的程序集，用于<see cref="T:BinarySerializer.Converter.TypeConverter"/>反序列化类型
+            </summary>
+            <param name="assembly">程序集</param>
+        </member>
+        <member name="M:BinarySerializer.Serializer.RemoveAssembly(System.Reflection.Assembly)">
+            <summary>
+            移除指定的程序集
+            </summary>
+            <param name="assembly">程序集</param>
+        </member>
+        <member name="M:BinarySerializer.Serializer.Serialize(System.Object,System.Boolean)">
+            <summary>
+            序列化一个对象，仅当类型不为<see langword="null"/>时，类型自动获取
+            </summary>
+            <param name="obj">要序列化的对象</param>
+            <param name="compress">是否进行压缩</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:BinarySerializer.Converter.PropertyCannotReadException"/>
+            <returns>字节数组</returns>
+        </member>
+        <member name="M:BinarySerializer.Serializer.Serialize``1(``0,System.Boolean)">
+            <summary>
+            序列化一个指定类型的对象，<see cref="T:System.Nullable`1"/>类型需要显式类型参数
+            </summary>
+            <typeparam name="T">要序列化的对象类型</typeparam>
+            <param name="obj">要序列化的对象</param>
+            <param name="compress">是否进行压缩</param>
+            <exception cref="T:BinarySerializer.Converter.PropertyCannotReadException"/>
+            <returns>字节数组</returns>
+        </member>
+        <member name="M:BinarySerializer.Serializer.Serialize(System.Object,System.IO.Stream)">
+            <summary>
+            序列化一个对象，仅当类型不为<see langword="null"/>时，类型自动获取
+            </summary>
+            <param name="obj">要序列化的对象</param>
+            <param name="stream">输出流</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:BinarySerializer.Converter.PropertyCannotReadException"/>
+        </member>
+        <member name="M:BinarySerializer.Serializer.Serialize``1(``0,System.IO.Stream)">
+            <summary>
+            序列化一个指定类型的对象，<see cref="T:System.Nullable`1"/>类型需要显式类型参数
+            </summary>
+            <typeparam name="T">要序列化的对象类型</typeparam>
+            <param name="obj">要序列化的对象</param>
+            <param name="stream">输出流</param>
+            <exception cref="T:BinarySerializer.Converter.PropertyCannotReadException"/>
+        </member>
+        <member name="M:BinarySerializer.Serializer.Serialize(System.Type,System.Object,System.IO.Stream)">
+            <summary>
+            序列化一个指定类型的对象
+            </summary>
+            <param name="type">要序列化的对象类型</param>
+            <param name="obj">要序列化的对象</param>
+            <param name="stream">输出流</param>
+            <exception cref="T:BinarySerializer.Converter.PropertyCannotReadException"/>
+        </member>
+        <member name="M:BinarySerializer.Serializer.Deserialize``1(System.Byte[],System.Boolean)">
+            <summary>
+            反序列化为指定类型的对象
+            </summary>
+            <typeparam name="T">反序列化的结果类型</typeparam>
+            <param name="bytes">字节数组</param>
+            <param name="decompress">是否解压缩</param>
+            <exception cref="T:BinarySerializer.Converter.TypeNotFoundException"/>
+        </member>
+        <member name="M:BinarySerializer.Serializer.Deserialize(System.Type,System.Byte[],System.Boolean)">
+            <summary>
+            反序列化为指定类型的对象
+            </summary>
+            <param name="type">反序列化的结果类型</param>
+            <param name="bytes">字节数组</param>
+            <param name="decompress">是否解压缩</param>
+            <exception cref="T:BinarySerializer.Converter.TypeNotFoundException"/>
+        </member>
+        <member name="M:BinarySerializer.Serializer.Deserialize``1(System.IO.Stream)">
+            <summary>
+            反序列化为指定类型的对象
+            </summary>
+            <typeparam name="T">反序列化的结果类型</typeparam>
+            <param name="stream">输入流</param>
+            <exception cref="T:BinarySerializer.Converter.TypeNotFoundException"/>
+        </member>
+        <member name="M:BinarySerializer.Serializer.Deserialize(System.Type,System.IO.Stream)">
+            <summary>
+            反序列化为指定类型的对象
+            </summary>
+            <param name="type">反序列化的结果类型</param>
+            <param name="stream">输入流</param>
+            <exception cref="T:BinarySerializer.Converter.TypeNotFoundException"/>
+        </member>
+    </members>
+</doc>

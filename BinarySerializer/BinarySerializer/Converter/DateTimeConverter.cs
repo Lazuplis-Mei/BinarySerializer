@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BinarySerializer.Converter
 {
+    /// <summary>
+    /// <see cref="DateTime"/>转换器
+    /// </summary>
     public class DateTimeConverter : BinaryConverter<DateTime>
     {
         public override DateTime ReadBytes(Stream stream)
@@ -20,6 +23,9 @@ namespace BinarySerializer.Converter
             writer.Write(obj.ToBinary());
         }
     }
+    /// <summary>
+    /// <see cref="TimeSpan"/>转换器
+    /// </summary>
     public class TimeSpanConverter : BinaryConverter<TimeSpan>
     {
         public override TimeSpan ReadBytes(Stream stream)
