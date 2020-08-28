@@ -1,5 +1,6 @@
 ﻿using System;
 using BinarySerializer;
+using BinarySerializer.Converter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BinarySerializerTest
@@ -24,5 +25,31 @@ namespace BinarySerializerTest
             Assert.AreEqual(testClass.X, testClass1.X);
             Assert.AreEqual(testClass.Y, testClass1.Y);
         }
+
+        [TestMethod]
+        public void TestSimpleClass2()
+        {
+            Student stu = new Student("Name001", 1000);
+            Student stu2 = Serializer.Deserialize<Student>(Serializer.Serialize(stu));
+
+            Assert.AreEqual(stu.Name, stu2.Name);
+            Assert.AreEqual(stu.Id, stu2.Id);
+        }
     }
+
+    class Student
+    {
+        public string Name;
+        public int Id;
+        public Student()
+        {
+            
+        }
+        public Student(string name, int id)
+        {
+            Name = name;
+            Id = id;
+        }
+    }
+
 }
