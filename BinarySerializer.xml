@@ -15,6 +15,11 @@
             <see cref="T:System.DateTime"/>转换器
             </summary>
         </member>
+        <member name="T:BinarySerializer.Converter.DateTimeOffsetConverter">
+            <summary>
+            <see cref="T:System.DateTimeOffset"/>转换器
+            </summary>
+        </member>
         <member name="T:BinarySerializer.Converter.TimeSpanConverter">
             <summary>
             <see cref="T:System.TimeSpan"/>转换器
@@ -66,6 +71,16 @@
             </summary>
             <typeparam name="T">转换类型</typeparam>
         </member>
+        <member name="T:BinarySerializer.Converter.GenericConverterAttribute">
+            <summary>
+            用于指定泛型类型转换器的基类和类型参数数量
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.GenericConverter">
+            <summary>
+            提供针对泛型类型的转换器基类
+            </summary>
+        </member>
         <member name="T:BinarySerializer.Converter.ElementType">
             <summary>
             基础类型枚举
@@ -103,6 +118,13 @@
             <typeparam name="TBase">基类型</typeparam>
             <param name="type">类型</param>
         </member>
+        <member name="M:BinarySerializer.Converter.Utilities.IsOrBaseFrom(System.Type,System.Type)">
+            <summary>
+            表示类型是否是<see langword="TBase"/>或继承自<see langword="tBase"/>
+            </summary>
+            <param name="type">类型</param>
+            <param name="tBase">基类型</param>
+        </member>
         <member name="M:BinarySerializer.Converter.Utilities.BytesToInts(System.Byte[])">
             <summary>
             将<see langword="byte[]"/>转换成<see langword="int[]"/>，长度不够将会在末尾补0
@@ -132,6 +154,48 @@
             <param name="obj">要修改的对象</param>
             <param name="memberName">字段或属性的名字</param>
             <param name="value">修改的值</param>
+        </member>
+        <member name="M:BinarySerializer.Converter.Utilities.ReadInt32(System.IO.Stream)">
+            <summary>
+            读取流中的一个整数
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BinarySerializer.Converter.Utilities.ReadBytes(System.IO.Stream,System.Int32)">
+            <summary>
+            读取流中的字节数组
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BinarySerializer.Converter.Utilities.WriteBytes(System.IO.Stream,System.Byte[])">
+            <summary>
+            向流中写入字节数组
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BinarySerializer.Converter.Utilities.ReadInt64(System.IO.Stream)">
+            <summary>
+            读取流中的一个长整数
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BinarySerializer.Converter.Utilities.WriteInt32(System.IO.Stream,System.Int32)">
+            <summary>
+            向流中写入一个整数
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BinarySerializer.Converter.Utilities.WriteInt64(System.IO.Stream,System.Int64)">
+            <summary>
+            向流中写入一个长整数
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
         </member>
         <member name="T:BinarySerializer.Serializer">
             <summary>

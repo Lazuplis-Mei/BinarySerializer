@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -19,7 +20,16 @@ namespace BinarySerializer.Converter
         /// <param name="type">类型</param>
         public static bool IsOrBaseFrom<TBase>(this Type type)
         {
-            Type tBase = typeof(TBase);
+            return type.IsOrBaseFrom(typeof(TBase));
+        }
+
+        /// <summary>
+        /// 表示类型是否是<see langword="TBase"/>或继承自<see langword="tBase"/>
+        /// </summary>
+        /// <param name="type">类型</param>
+        /// <param name="tBase">基类型</param>
+        public static bool IsOrBaseFrom(this Type type, Type tBase)
+        {
             while(type.BaseType != null)
             {
                 if(type == tBase)
@@ -30,6 +40,7 @@ namespace BinarySerializer.Converter
             }
             return tBase.BaseType == null;
         }
+
         /// <summary>
         /// 将<see langword="byte[]"/>转换成<see langword="int[]"/>，长度不够将会在末尾补0
         /// </summary>
@@ -113,5 +124,73 @@ namespace BinarySerializer.Converter
             }
         }
 
+
+        public static object Invoke(this MethodInfo method, object obj, params object[] args)
+        {
+            return method.Invoke(obj, args);
+        }
+
+        /// <summary>
+        /// 读取流中的一个整数
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static int ReadInt32(this Stream stream)
+        {
+            return stream.ReadByte() | (stream.ReadByte() << 8) | (stream.ReadByte() << 16) | (stream.ReadByte() << 24);
+        }
+
+        /// <summary>
+        /// 读取流中的字节数组
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static byte[] ReadBytes(this Stream stream, int len)
+        {
+            byte[] result = new byte[len];
+            stream.Read(result, 0, len);
+            return result;
+        }
+
+        /// <summary>
+        /// 向流中写入字节数组
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static void WriteBytes(this Stream stream, byte[] bytes)
+        {
+            stream.Write(bytes, 0, bytes.Length);
+        }
+
+        /// <summary>
+        /// 读取流中的一个长整数
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static long ReadInt64(this Stream stream)
+        {
+            return (uint)stream.ReadInt32() | ((long)stream.ReadInt32() << 32);
+        }
+
+        /// <summary>
+        /// 向流中写入一个整数
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static void WriteInt32(this Stream stream, int num)
+        {
+            stream.Write(BitConverter.GetBytes(num), 0, 4);
+        }
+
+        /// <summary>
+        /// 向流中写入一个长整数
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static void WriteInt64(this Stream stream, long num)
+        {
+            stream.Write(BitConverter.GetBytes(num), 0, 8);
+        }
     }
+    
 }

@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ElementTypeConverterTest.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="SimpleClassTest.cs" />
     <Compile Include="EnumTest.cs" />
     <Compile Include="NullableTest.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="ArrayTest.cs" />
     <Compile Include="GenericTest.cs" />
     <Compile Include="CompressTest.cs" />
+    <Compile Include="DateTimeTest.cs" />
     <Compile Include="UtilitiesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
+using static BinarySerializer.Serializer;
 
 namespace BinarySerializer.Converter
 {
@@ -12,42 +12,18 @@ namespace BinarySerializer.Converter
     /// <summary>
     /// <see cref="KeyValuePair{TKey, TValue}"/>转换器
     /// </summary>
-    public class KeyValuePairConverter : BinaryConverter
+    [GenericConverter(typeof(KeyValuePair<,>))]
+    public class KeyValuePairConverter : GenericConverter
     {
-        public Type TKey;
-        public Type TValue;
-        public PropertyInfo PropKey;
-        public PropertyInfo PropValue;
-        public override bool CanConvert(Type type)
-        {
-            if(type.IsGenericType)
-            {
-                Type[] types = type.GetGenericArguments();
-                if(types.Length == 2)
-                {
-                    TKey = types[0];
-                    TValue = types[1];
-                    Type currentType = typeof(KeyValuePair<,>).MakeGenericType(types);
-                    if(currentType == type)
-                    {
-                        PropKey = currentType.GetProperty("Key");
-                        PropValue = currentType.GetProperty("Value");
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
         public override void ReadBytes(Stream stream, out object obj)
         {
+            obj = null;
             if(stream.ReadByte() != 0)
             {
-                object key = Serializer.Deserialize(TKey, stream);
-                object value = Serializer.Deserialize(TValue, stream);
-                obj = Activator.CreateInstance(PropKey.DeclaringType, key, value);
-                return;
+                object key = Deserialize(TypeArgs[0], stream);
+                object value = Deserialize(TypeArgs[1], stream);
+                obj = Activator.CreateInstance(CurrentType, key, value);
             }
-            obj = null;
         }
         public override void WriteBytes(object obj, Stream stream)
         {
@@ -58,55 +34,33 @@ namespace BinarySerializer.Converter
             else
             {
                 stream.WriteByte(1);
-                Serializer.Serialize(TKey, PropKey.GetValue(obj), stream);
-                Serializer.Serialize(TValue, PropValue.GetValue(obj), stream);
+                Serialize(TypeArgs[0], CurrentType.GetProperty("Key").GetValue(obj), stream);
+                Serialize(TypeArgs[1], CurrentType.GetProperty("Value").GetValue(obj), stream);
             }
         }
     }
+
+
     /// <summary>
     /// <see cref="Dictionary{TKey, TValue}"/>转换器
     /// </summary>
-    public class DictionaryConverter : BinaryConverter
+    [GenericConverter(typeof(Dictionary<,>))]
+    public class DictionaryConverter : GenericConverter
     {
-        public Type TKey;
-        public Type TValue;
-        public PropertyInfo PropKeys;
-        public PropertyInfo PropValues;
-        public override bool CanConvert(Type type)
-        {
-            if(type.IsGenericType)
-            {
-                Type[] types = type.GetGenericArguments();
-                if(types.Length == 2)
-                {
-                    TKey = types[0];
-                    TValue = types[1];
-                    Type currentType = typeof(Dictionary<,>).MakeGenericType(types);
-                    if(currentType == type)
-                    {
-                        PropKeys = currentType.GetProperty("Keys");
-                        PropValues = currentType.GetProperty("Values");
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
         public override void ReadBytes(Stream stream, out object obj)
         {
+            obj = null;
             if(stream.ReadByte() != 0)
             {
-                var keys = (Array)Serializer.Deserialize(TKey.MakeArrayType(), stream);
-                var values = (Array)Serializer.Deserialize(TValue.MakeArrayType(), stream);
-                obj = Activator.CreateInstance(PropKeys.DeclaringType);
-                MethodInfo add = PropKeys.DeclaringType.GetMethod("Add");
+                var keys = (Array)Deserialize(TypeArgs[0].MakeArrayType(), stream);
+                var values = (Array)Deserialize(TypeArgs[1].MakeArrayType(), stream);
+                obj = Activator.CreateInstance(CurrentType);
+                MethodInfo Add = CurrentType.GetMethod("Add");
                 for(int i = 0; i < keys.Length; i++)
                 {
-                    add.Invoke(obj, new[] { keys.GetValue(i), values.GetValue(i) });
+                    Add.Invoke(obj, keys.GetValue(i), values.GetValue(i));
                 }
-                return;
             }
-            obj = null;
         }
         public override void WriteBytes(object obj, Stream stream)
         {
@@ -117,8 +71,8 @@ namespace BinarySerializer.Converter
             else
             {
                 stream.WriteByte(1);
-                Serializer.Serialize(TKey.MakeArrayType(), PropKeys.GetValue(obj), stream);
-                Serializer.Serialize(TValue.MakeArrayType(), PropValues.GetValue(obj), stream);
+                Serialize(TypeArgs[0].MakeArrayType(), CurrentType.GetProperty("Keys").GetValue(obj), stream);
+                Serialize(TypeArgs[1].MakeArrayType(), CurrentType.GetProperty("Values").GetValue(obj), stream);
             }
         }
     }

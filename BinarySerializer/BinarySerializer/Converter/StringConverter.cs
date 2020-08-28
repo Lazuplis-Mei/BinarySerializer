@@ -3,39 +3,26 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using static BinarySerializer.Serializer;
 
 namespace BinarySerializer.Converter
 {
     /// <summary>
-    /// <see cref="string"/>转换器，默认编码为<see cref="Serializer.DefaultEncoding"/>
+    /// <see cref="string"/>转换器，默认编码为<see cref="DefaultEncoding"/>
     /// </summary>
     public class StringConverter : BinaryConverter<string>
     {
         public override string ReadBytes(Stream stream)
         {
-            BinaryReader reader = new BinaryReader(stream);
-            int len = reader.ReadInt32();
-            if(len != -1)
-            {
-                byte[] bytes = reader.ReadBytes(len);
-                return Serializer.DefaultEncoding.GetString(bytes);
-            }
-            return null;
+            int len = stream.ReadInt32();
+            byte[] bytes = stream.ReadBytes(len);
+            return DefaultEncoding.GetString(bytes);
         }
         public override void WriteBytes(string obj, Stream stream)
         {
-            BinaryWriter writer = new BinaryWriter(stream);
-            if(obj == null)
-            {
-                writer.Write(-1);
-            }
-            else
-            {
-                byte[] bytes = Serializer.DefaultEncoding.GetBytes(obj);
-                writer.Write(bytes.Length);
-                writer.Write(bytes);
-            }
+            byte[] bytes = DefaultEncoding.GetBytes(obj);
+            stream.WriteInt32(bytes.Length);
+            stream.WriteBytes(bytes);
         }
     }
 }

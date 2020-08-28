@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
+using static BinarySerializer.Serializer;
 
 namespace BinarySerializer.Converter
 {
@@ -40,42 +41,76 @@ namespace BinarySerializer.Converter
         }
         public override void ReadBytes(Stream stream, out object obj)
         {
-            BinaryReader reader = new BinaryReader(stream);
-            int len = reader.ReadInt32();
+            obj = null;
+            int len = stream.ReadInt32();
             if(len != -1)
             {
                 Type type = typeof(List<>).MakeGenericType(InternalType);
                 object list = Activator.CreateInstance(type);
-                var addMethod = type.GetMethod("Add");
+                var Add = type.GetMethod("Add");
                 for(int i = 0; i < len; i++)
                 {
-                    addMethod.Invoke(list, new[] { Serializer.Deserialize(InternalType, stream) });
+                    Add.Invoke(list, Deserialize(InternalType, stream));
                 }
                 obj = list;
                 if(IsArray)
                 {
-                    obj = type.GetMethod("ToArray").Invoke(list, null);
+                    obj = type.GetMethod("ToArray").Invoke(list);
                 }
-                return;
             }
-            obj = null;
         }
         public override void WriteBytes(object obj, Stream stream)
         {
-            BinaryWriter writer = new BinaryWriter(stream);
             if(obj == null)
             {
-                writer.Write(-1);
+                stream.WriteInt32(-1);
             }
             else
             {
-                IEnumerable<object> array = ((System.Collections.IEnumerable)obj).Cast<object>();
-                writer.Write(array.Count());
+                IEnumerable<object> array = ((IEnumerable)obj).Cast<object>();
+                stream.WriteInt32(array.Count());
                 foreach(var item in array)
                 {
-                    Serializer.Serialize(InternalType, item, stream);
+                    Serialize(InternalType, item, stream);
                 }
             }
+        }
+    }
+
+    [GenericConverter(typeof(HashSet<>))]
+    public class HashSetConverter : GenericConverter
+    {
+        public override void ReadBytes(Stream stream, out object obj)
+        {
+            obj = null;
+            int len = stream.ReadInt32();
+            if(len != -1)
+            {
+                object hashset = Activator.CreateInstance(CurrentType);
+                for(int i = 0; i < len; i++)
+                {
+                    var Add = CurrentType.GetMethod("Add");
+                    Add.Invoke(hashset, Deserialize(TypeArgs[0], stream));
+                }
+                obj = hashset;
+            }
+        }
+        public override void WriteBytes(object obj, Stream stream)
+        {
+            if(obj == null)
+            {
+                stream.WriteInt32(-1);
+            }
+            else
+            {
+                IEnumerable<object> hashset = ((IEnumerable)obj).Cast<object>();
+                stream.WriteInt32(hashset.Count());
+                foreach(var item in hashset)
+                {
+                    Serialize(TypeArgs[0], item, stream);
+                }
+            }
+
         }
     }
 }

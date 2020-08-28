@@ -3,31 +3,23 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using static BinarySerializer.Serializer;
 
 namespace BinarySerializer.Converter
 {
     /// <summary>
     /// 可空类型<see cref="Nullable{T}"/>转换器
     /// </summary>
-    public class NullableConverter : BinaryConverter
+    [GenericConverter(typeof(Nullable<>))]
+    public class NullableConverter : GenericConverter
     {
-        public Type InternalType;
-        public override bool CanConvert(Type type)
-        {
-            if(type.IsGenericType)
-            {
-                InternalType = type.GenericTypeArguments[0];
-                return typeof(Nullable<>).MakeGenericType(InternalType) == type;
-            }
-            return false;
-        }
+        
         public override void ReadBytes(Stream stream, out object obj)
         {
             obj = null;
             if(stream.ReadByte() != 0)
             {
-                obj = Serializer.Deserialize(InternalType, stream);
+                obj = Deserialize(TypeArgs[0], stream);
             }
         }
         public override void WriteBytes(object obj, Stream stream)
@@ -39,7 +31,7 @@ namespace BinarySerializer.Converter
             else
             {
                 stream.WriteByte(1);
-                Serializer.Serialize(obj, stream);
+                Serialize(obj, stream);
             }
         }
     }

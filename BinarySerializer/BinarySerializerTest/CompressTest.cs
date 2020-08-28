@@ -10,7 +10,7 @@ namespace BinarySerializerTest
         [TestMethod]
         public void TestCompress()
         {
-            string str = "uhhuhuhuuhuhhhuhhhhhhhuuuu";
+            string str = "aaaaaabbbbbbccccccdddddd";
             str += str;
             str += str;
             str += str;

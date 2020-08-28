@@ -100,8 +100,10 @@ namespace BinarySerializer
             AddConverter<DictionaryConverter>();
             AddConverter<KeyValuePairConverter>();
             AddConverter<DateTimeConverter>();
+            AddConverter<DateTimeOffsetConverter>();
             AddConverter<TimeSpanConverter>();
             AddConverter<EnocdingConverter>();
+            AddConverter<HashSetConverter>();
 
             AddAssembly(typeof(int).Assembly);
         }
@@ -205,15 +207,14 @@ namespace BinarySerializer
                     return;
                 }
             }
-            BinaryWriter Writer = new BinaryWriter(stream);
             if(obj == null)
             {
-                Writer.Write(-1);
+                stream.WriteInt32(-1);
             }
             else
             {
                 int pos = (int)stream.Position;
-                Writer.Write(0);
+                stream.WriteInt32(0);
                 if(type.BaseType != null)
                 {
                     ObjectConverter.WriteBytes(type, obj, stream);
@@ -237,7 +238,7 @@ namespace BinarySerializer
                 }
                 int dpos = (int)stream.Position;
                 stream.Position = pos;
-                Writer.Write(dpos - pos - 4);
+                stream.WriteInt32(dpos - pos - 4);
                 stream.Position = dpos;
             }
         }
@@ -314,8 +315,7 @@ namespace BinarySerializer
                     return result;
                 }
             }
-            BinaryReader reader = new BinaryReader(stream);
-            int len = reader.ReadInt32();
+            int len = stream.ReadInt32();
             if(len != -1)
             {
                 if(type.BaseType != null)
@@ -326,7 +326,7 @@ namespace BinarySerializer
                 {
                     return new object();
                 }
-                return reader.ReadBytes(len);
+                return stream.ReadBytes(len);
             }
             return null;
         }

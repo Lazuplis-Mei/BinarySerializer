@@ -14,15 +14,29 @@ namespace BinarySerializer.Converter
     {
         public override DateTime ReadBytes(Stream stream)
         {
-            BinaryReader reader = new BinaryReader(stream);
-            return DateTime.FromBinary(reader.ReadInt64());
+            return DateTime.FromBinary(stream.ReadInt64());
         }
         public override void WriteBytes(DateTime obj, Stream stream)
         {
-            BinaryWriter writer = new BinaryWriter(stream);
-            writer.Write(obj.ToBinary());
+            stream.WriteInt64(obj.ToBinary());
         }
     }
+
+    /// <summary>
+    /// <see cref="DateTimeOffset"/>转换器
+    /// </summary>
+    public class DateTimeOffsetConverter : BinaryConverter<DateTimeOffset>
+    {
+        public override DateTimeOffset ReadBytes(Stream stream)
+        {
+            return DateTimeOffset.FromFileTime(stream.ReadInt64());
+        }
+        public override void WriteBytes(DateTimeOffset obj, Stream stream)
+        {
+            stream.WriteInt64(obj.ToFileTime());
+        }
+    }
+
     /// <summary>
     /// <see cref="TimeSpan"/>转换器
     /// </summary>
@@ -30,13 +44,11 @@ namespace BinarySerializer.Converter
     {
         public override TimeSpan ReadBytes(Stream stream)
         {
-            BinaryReader reader = new BinaryReader(stream);
-            return TimeSpan.FromTicks(reader.ReadInt64());
+            return TimeSpan.FromTicks(stream.ReadInt64());
         }
         public override void WriteBytes(TimeSpan obj, Stream stream)
         {
-            BinaryWriter writer = new BinaryWriter(stream);
-            writer.Write(obj.Ticks);
+            stream.WriteInt64(obj.Ticks);
         }
     }
 }

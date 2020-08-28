@@ -53,5 +53,25 @@ namespace BinarySerializerTest
             }
 
         }
+
+        [TestMethod]
+        public void TestHashSet()
+        {
+            var hashset = new HashSet<string>();
+            hashset.Add("one");
+            hashset.Add("two");
+            hashset.Add("three");
+
+            var hashset2 = Serializer.Deserialize<HashSet<string>>(Serializer.Serialize(hashset));
+
+            Assert.AreEqual(hashset.Count, hashset2.Count);
+            var list = hashset.ToArray();
+            var list2 = hashset2.ToArray();
+            for(int i = 0; i < list.Length; i++)
+            {
+                Assert.AreEqual(list[i], list2[i]);
+            }
+
+        }
     }
 }

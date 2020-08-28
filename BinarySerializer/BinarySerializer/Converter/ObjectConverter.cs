@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
+using static BinarySerializer.Serializer;
 
 namespace BinarySerializer.Converter
 {
@@ -45,7 +45,7 @@ namespace BinarySerializer.Converter
             {
                 if(field.GetCustomAttribute<BinaryIgnoreAttribute>() == null)
                 {
-                    field.SetValue(obj, Serializer.Deserialize(field.FieldType, stream));
+                    field.SetValue(obj, Deserialize(field.FieldType, stream));
                 }
             }
             foreach(var propertyInfo in propertyInfos)
@@ -56,7 +56,7 @@ namespace BinarySerializer.Converter
                     {
                         if(propertyInfo.SetMethod.GetParameters().Length == 1)
                         {
-                            object value = Serializer.Deserialize(propertyInfo.PropertyType, stream);
+                            object value = Deserialize(propertyInfo.PropertyType, stream);
 
                             propertyInfo.SetValue(obj, value);
                         }
@@ -78,7 +78,7 @@ namespace BinarySerializer.Converter
             {
                 if(field.GetCustomAttribute<BinaryIgnoreAttribute>() == null)
                 {
-                    Serializer.Serialize(field.FieldType, field.GetValue(obj), stream);
+                    Serialize(field.FieldType, field.GetValue(obj), stream);
                 }
             }
             foreach(var propertyInfo in propertyInfos)
@@ -91,7 +91,7 @@ namespace BinarySerializer.Converter
                     }
                     if(propertyInfo.GetMethod.GetParameters().Length == 0)
                     {
-                        Serializer.Serialize(propertyInfo.PropertyType, propertyInfo.GetValue(obj), stream);
+                        Serialize(propertyInfo.PropertyType, propertyInfo.GetValue(obj), stream);
                     }
                 } 
             }

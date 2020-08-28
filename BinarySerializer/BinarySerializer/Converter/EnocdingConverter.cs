@@ -14,25 +14,11 @@ namespace BinarySerializer.Converter
     {
         public override Encoding ReadBytes(Stream stream)
         {
-            if(stream.ReadByte() != 0)
-            {
-                BinaryReader reader = new BinaryReader(stream);
-                return Encoding.GetEncoding(reader.ReadInt32());
-            }
-            return null;
+            return Encoding.GetEncoding(stream.ReadInt32());
         }
         public override void WriteBytes(Encoding obj, Stream stream)
         {
-            if(obj == null)
-            {
-                stream.WriteByte(0);
-            }
-            else
-            {
-                stream.WriteByte(1);
-                BinaryWriter writer = new BinaryWriter(stream);
-                writer.Write(obj.CodePage);
-            }
+            stream.WriteInt32(obj.CodePage);
         }
     }
 }
