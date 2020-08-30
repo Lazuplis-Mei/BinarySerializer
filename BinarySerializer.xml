@@ -81,6 +81,16 @@
             提供针对泛型类型的转换器基类
             </summary>
         </member>
+        <member name="T:BinarySerializer.Converter.BinaryConstructorAttribute">
+            <summary>
+            当类型不存在默认构造器时，指定一个构造器作为反序列化时的入口
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.IBinarySerializable">
+            <summary>
+            IBinarySerializable接口，用以自定义序列化的实现
+            </summary>
+        </member>
         <member name="T:BinarySerializer.Converter.ElementType">
             <summary>
             基础类型枚举
@@ -94,6 +104,11 @@
         <member name="T:BinarySerializer.Converter.PropertyCannotReadException">
             <summary>
             属性不可读
+            </summary>
+        </member>
+        <member name="T:BinarySerializer.Converter.ConstructorNotFoundException">
+            <summary>
+            找不到指定类型可调用的构造器
             </summary>
         </member>
         <member name="T:BinarySerializer.Converter.BinaryIgnoreAttribute">

@@ -77,6 +77,7 @@ namespace BinarySerializer
             }
         }
 
+
         /// <summary>
         /// 移除指定的程序集
         /// </summary>
@@ -198,6 +199,13 @@ namespace BinarySerializer
             {
                 AddAssembly(type.Assembly);
             }
+
+            if(type.GetInterfaces().Contains(typeof(IBinarySerializable)))
+            {
+                var binarySerializable = (IBinarySerializable)obj;
+                binarySerializable.Serialize(stream);
+                return;
+            }
             foreach(var converter in _converters)
             {
                 var binaryConverter = (BinaryConverter)Activator.CreateInstance(converter);
@@ -306,6 +314,11 @@ namespace BinarySerializer
         /// <exception cref="TypeNotFoundException"/>
         public static object Deserialize(Type type, Stream stream)
         {
+            if(type.GetInterfaces().Contains(typeof(IBinarySerializable)))
+            {
+                var binarySerializable = (IBinarySerializable)ObjectConverter.CreateInstance(type);
+                return binarySerializable.Deserialize(stream);
+            }
             foreach(var converter in _converters)
             {
                 var binaryConverter = (BinaryConverter)Activator.CreateInstance(converter);

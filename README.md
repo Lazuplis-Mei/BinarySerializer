@@ -92,3 +92,49 @@ class EnocdingConverter : BinaryConverter<Encoding>
 //AddConverter
 Serializer.AddConverter<EnocdingConverter>();
 ```
+
+> BinaryConstructor attribte
+
+```cs
+class Student
+{
+    public string Name;
+    public int Id;
+    [BinaryConstructor]
+    public Student(string name, int id)
+    {
+        Name = name;
+        Id = id;
+    }
+    public Student()
+    {
+        //if default ctor exists
+        //[BinaryConstructor] is no sense
+        //or it's required
+    }
+}
+```
+
+> implement IBinarySerializable
+
+```cs
+class Person: IBinarySerializable//no need to coding a Converter and add it
+{
+    public string Name { get; }
+
+    [BinaryConstructor]//still required
+    public Person(string name)
+    {
+        Name = name;
+    }
+
+    public void Serialize(Stream stream)
+    {
+        Serializer.Serialize(Name, stream);
+    }
+    public object Deserialize(Stream stream)
+    {
+        return new Person(Serializer.Deserialize<string>(stream));
+    }
+}
+```

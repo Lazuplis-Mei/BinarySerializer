@@ -18,10 +18,18 @@ namespace BinarySerializer.Converter
     }
 
     /// <summary>
+    /// 找不到指定类型可调用的构造器
+    /// </summary>
+    public class ConstructorNotFoundException : Exception
+    {
+
+    }
+
+    /// <summary>
     /// 该特性可用于修饰字段和属性，指示它们不被序列化
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public sealed class BinaryIgnoreAttribute : Attribute
+    public class BinaryIgnoreAttribute : Attribute
     {
 
     }
@@ -38,7 +46,7 @@ namespace BinarySerializer.Converter
 
         public static object ReadBytes(Type type, Stream stream)
         {
-            object obj = Activator.CreateInstance(type);
+            object obj = CreateInstance(type);
             var fieldInfos = type.GetFields(Serializer.BindingFlags).OrderBy(f => f.Name);
             var propertyInfos = type.GetProperties(Serializer.BindingFlags).OrderBy(f => f.Name);
             foreach(var field in fieldInfos)
@@ -63,6 +71,35 @@ namespace BinarySerializer.Converter
                     }
                 }
             }
+            return obj;
+        }
+
+        public static object CreateInstance(Type type)
+        {
+            if(type.IsValueType)
+            {
+                return Activator.CreateInstance(type);
+            }
+            object obj;
+            var constructor = type.GetConstructor(new Type[0]);
+            if(constructor == null)
+            {
+
+                var constructors = type.GetConstructors().Where(c => c.GetCustomAttribute<BinaryConstructorAttribute>() != null);
+                if(constructors.Count() == 0)
+                {
+                    throw new ConstructorNotFoundException();
+                }
+                constructor = constructors.First();
+                var args = constructor.GetParameters().Select(p => p.ParameterType.IsValueType ?
+                  Activator.CreateInstance(p.ParameterType) : null).ToArray();
+                obj = constructor.Invoke(args);
+            }
+            else
+            {
+                obj = constructor.Invoke(new object[0]);
+            }
+
             return obj;
         }
 

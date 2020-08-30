@@ -56,8 +56,8 @@ namespace BinarySerializer.Converter
     /// <summary>
     /// 用于指定泛型类型转换器的基类和类型参数数量
     /// </summary>
-    [System.AttributeUsage(AttributeTargets.Class)]
-    sealed class GenericConverterAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class)]
+    public class GenericConverterAttribute : Attribute
     {
         public int GenericTypeArgsCount { get; }
         public Type GenericType { get; }
@@ -115,5 +115,23 @@ namespace BinarySerializer.Converter
             }
             return false;
         }
+    }
+
+    /// <summary>
+    /// 当类型不存在默认构造器时，指定一个构造器作为反序列化时的入口
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Constructor)]
+    public class BinaryConstructorAttribute : Attribute
+    {
+        
+    }
+
+    /// <summary>
+    /// IBinarySerializable接口，用以自定义序列化的实现
+    /// </summary>
+    public interface IBinarySerializable
+    {
+        void Serialize(Stream stream);
+        object Deserialize(Stream stream);
     }
 }
