@@ -100,8 +100,8 @@ class Student
 {
     public string Name;
     public int Id;
-    [BinaryConstructor]
-    public Student(string name, int id)
+    [BinaryConstructor("name")]//you can add default value
+    public Student(string name, int id)//this ctor can be private and accessable even Serializer.OnlyPublicMember is true
     {
         Name = name;
         Id = id;

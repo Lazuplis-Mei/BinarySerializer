@@ -39,10 +39,11 @@ namespace BinarySerializerTest
         [TestMethod]
         public void TestSimpleClass3()
         {
-            Person p = new Person("Name001");
+            Person p = new Person("Name001", 25);
             Person p2 = Serializer.Deserialize<Person>(Serializer.Serialize(p));
 
             Assert.AreEqual(p.Name, p2.Name);
+            Assert.AreEqual(p.Age, p2.Age);
         }
     }
 
@@ -62,19 +63,33 @@ namespace BinarySerializerTest
     class Person: IBinarySerializable
     {
         public string Name { get; }
-        [BinaryConstructor]
-        public Person(string name)
+        public int Age { get; }
+        public Person(string name,int age)
         {
+            if(name == null)
+            {
+                throw new ArgumentNullException();
+            }
             Name = name;
+            Age = age;
+        }
+
+        [BinaryConstructor("<dafault name>")]
+        private Person(string name) : this(name, 0)
+        {
+            
         }
 
         public void Serialize(Stream stream)
         {
             Serializer.Serialize(Name, stream);
+            Serializer.Serialize(Age, stream);
         }
         public object Deserialize(Stream stream)
         {
-            return new Person(Serializer.Deserialize<string>(stream));
+            string name = Serializer.Deserialize<string>(stream);
+            int age = Serializer.Deserialize<int>(stream);
+            return new Person(name, age);
         }
     }
 

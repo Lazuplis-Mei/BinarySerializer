@@ -86,6 +86,9 @@
             当类型不存在默认构造器时，指定一个构造器作为反序列化时的入口
             </summary>
         </member>
+        <member name="M:BinarySerializer.Converter.BinaryConstructorAttribute.#ctor(System.Object[])">
+            <param name="args">默认的构造参数</param>
+        </member>
         <member name="T:BinarySerializer.Converter.IBinarySerializable">
             <summary>
             IBinarySerializable接口，用以自定义序列化的实现

@@ -85,15 +85,37 @@ namespace BinarySerializer.Converter
             if(constructor == null)
             {
 
-                var constructors = type.GetConstructors().Where(c => c.GetCustomAttribute<BinaryConstructorAttribute>() != null);
+                var constructors = type.GetConstructors(Serializer.BindingFlags | 
+                    System.Reflection.BindingFlags.NonPublic).Where(
+                    c => c.GetCustomAttribute<BinaryConstructorAttribute>() != null);
                 if(constructors.Count() == 0)
                 {
                     throw new ConstructorNotFoundException();
                 }
                 constructor = constructors.First();
-                var args = constructor.GetParameters().Select(p => p.ParameterType.IsValueType ?
-                  Activator.CreateInstance(p.ParameterType) : null).ToArray();
-                obj = constructor.Invoke(args);
+                var binaryConstructorAttribute = constructor.GetCustomAttribute<BinaryConstructorAttribute>();
+                var paramInfos = constructor.GetParameters();
+                List<object> args = new List<object>();
+                for(int i = 0; i < paramInfos.Length; i++)
+                {
+                    if(i < binaryConstructorAttribute.Args.Length)
+                    {
+                        args.Add(binaryConstructorAttribute.Args[i]);
+                    }
+                    else
+                    {
+                        var paramtype = paramInfos[i].ParameterType;
+                        if(paramtype.IsValueType)
+                        {
+                            args.Add(Activator.CreateInstance(paramtype));
+                        }
+                        else
+                        {
+                            args.Add(null);
+                        }
+                    }
+                }
+                obj = constructor.Invoke(args.ToArray());
             }
             else
             {

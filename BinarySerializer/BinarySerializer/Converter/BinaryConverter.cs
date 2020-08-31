@@ -123,7 +123,12 @@ namespace BinarySerializer.Converter
     [AttributeUsage(AttributeTargets.Constructor)]
     public class BinaryConstructorAttribute : Attribute
     {
-        
+        public object[] Args { get; }
+        /// <param name="args">默认的构造参数</param>
+        public BinaryConstructorAttribute(params object[] args)
+        {
+            Args = args;
+        }
     }
 
     /// <summary>
